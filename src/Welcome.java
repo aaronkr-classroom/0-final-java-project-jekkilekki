@@ -11,7 +11,8 @@ public class Welcome {
 
 	public static void main(String[] args) {
 		
-		String[][] mBook = new String[NUM_BOOK][NUM_ITEM]; // [3][7] = 책: 3, 모든 책의 속성: 7
+		// String[][] mBook = new String[NUM_BOOK][NUM_ITEM]; // [3][7] = 책: 3, 모든 책의 속성: 7
+		Book[] mBookList = new Book[NUM_BOOK]; // 9장
 		
 		// 사용자 입력받기
 		Scanner input = new Scanner(System.in);
@@ -68,7 +69,7 @@ public class Welcome {
 					menuCartBill();
 					break;
 				case 5:
-					menuCartAddItem(mBook);
+					menuCartAddItem(mBookList); // 9장
 					break;
 				case 6:
 					menuCartRemoveItemCount();
