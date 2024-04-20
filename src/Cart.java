@@ -8,7 +8,7 @@ public class Cart implements CartInterface {
 
   public void printBookList(Book[] booklist) {
     for ( int i = 0; i < booklist.length; i++ ) {
-      System.out.print(booklist[i].getBookID() + " | ");
+      System.out.print(booklist[i].getBookId() + " | ");
       System.out.print(booklist[i].getName() + " | ");
       System.out.print(booklist[i].getUnitPrice() + " | ");
       System.out.print(booklist[i].getAuthor() + " | ");
@@ -60,7 +60,7 @@ public class Cart implements CartInterface {
 
     for ( int i = 0; i < mCartCount; i++ )
       if ( numId != i ) 
-        CartItem[num++] = mCartItem[i];
+        cartItem[num++] = mCartItem[i];
 
     mCartCount = num;
     mCartItem = cartItem;

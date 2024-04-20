@@ -8,6 +8,14 @@ public class Book extends Item {
 	public Book(
 			String bookId, 
 			String name,   
+			int unitPrice) {
+		super(bookId, name, unitPrice); // 먼저 Item 생성자 호출
+	}
+		
+	// 생성자
+	public Book(
+			String bookId, 
+			String name,   
 			int unitPrice,  
 			String author,   
 			String description,  
