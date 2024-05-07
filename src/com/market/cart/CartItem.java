@@ -1,3 +1,6 @@
+package com.market.cart;
+import com.market.bookitem.Book;
+
 public class CartItem {
 	// 변수
 	private Book itemBook; // 9장

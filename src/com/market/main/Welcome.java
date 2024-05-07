@@ -1,4 +1,10 @@
+package com.market.main;
 import java.util.Scanner;
+
+import com.market.bookitem.Book;
+import com.market.cart.Cart;
+import com.market.member.Admin;
+import com.market.member.User;
 
 public class Welcome {
 	
@@ -252,7 +258,18 @@ public class Welcome {
 	} // menuCartRemoveItem() 끝
 	
 	public static void menuCartBill() {
-		System.out.println("4. 영수증 표시하기:");
+		// System.out.println("4. 영수증 표시하기:");
+		if(mCart.mCartCount == 0) 
+			System.out.println("장바구니에 항목이 없습니다.");
+		else {
+			System.out.println("배송받을 분은 고객 정보와 같습니까? Y | N");
+			Scanner input = new Scanner(System.in);
+			String str = input.nextLine();
+			
+			if (str.toUpperCase().equals("Y")) {
+				System.out.println("배송지를")
+			}
+		}
 	} // menuCartBill() 끝
 	
 	public static void menuCartExit() {

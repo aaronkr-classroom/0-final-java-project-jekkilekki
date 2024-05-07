@@ -1,3 +1,4 @@
+package com.market.member;
 public class Person {
 	// 클래스의 변수들
 	private String name;
