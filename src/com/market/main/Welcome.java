@@ -1,4 +1,6 @@
 package com.market.main;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -22,7 +24,9 @@ public class Welcome {
 	public static void main(String[] args) {
 		
 		// String[][] mBook = new String[NUM_BOOK][NUM_ITEM]; // [3][7] = 책: 3, 모든 책의 속성: 7
-		Book[] mBookList = new Book[NUM_BOOK]; // 9장
+		// Book[] mBookList = new Book[NUM_BOOK]; // 9장
+		Book[] mBookList;
+		int mTotalBook = 0;
 		
 		// 사용자 입력받기
 		Scanner input = new Scanner(System.in);
@@ -80,6 +84,8 @@ public class Welcome {
 						menuCartBill();
 						break;
 					case 5:
+						mTotalBook = totalFileToBookList();
+						mBookList = new Book[mTotalBook];
 						menuCartAddItem(mBookList); // 9장
 						break;
 					case 6:
@@ -318,6 +324,19 @@ public class Welcome {
 		
 		if (adminId.equals(admin.getId())
 				&& adminPw.equals(admin.getPw())) {
+			String[] writeBook = new String[7];
+			System.out.println("도서 정보를 추가하겠습니까? Y | N");
+			String str = input.next();
+			
+			if (str.toUpperCase().equals("Y")) {
+				Date date = new Date();
+				SimpleDateFormat formatter = new SimpleDateFormat("yyMMddhhmmss");
+				String strDate = formatter.format(date);
+				writeBook[0] = "ISBN" + strDate;
+				System.out.println("도서 ID : " + writeBook[0]);
+				// @TODO: Page 515... Slide 49
+			}
+			
 			System.out.println("이름: " + admin.getName() + "  연락차: " + admin.getPhone());
 			System.out.println("아이디: " + admin.getId() + "  비밀번호: " + admin.getPw());
 		} else {
@@ -328,7 +347,8 @@ public class Welcome {
 	/* ###################################
 	 */
 	public static void BookList(Book[] booklist) {
-
+		setFileToBookList(booklist);
+		/*
 		booklist[0] = new Book("ISBN1234", "쉽게 배우는 JSP 웹 프로그래밍", 27000); // 27,000
 		booklist[0].setAuthor("송미영");
 		booklist[0].setDescription("단계별로 쇼핑몰 구현하며 배우는 JSP 웹 프로그래밍");
@@ -346,6 +366,7 @@ public class Welcome {
 		booklist[2].setAuthor("컴퓨팅 사고력을 키우는 블록 코딩");
 		booklist[2].setAuthor("컴퓨터입문");
 		booklist[2].setAuthor("2019/06/10");
+		*/
 	}
 
 	public static boolean isBookInCart(String bookId) {
@@ -384,6 +405,68 @@ public class Welcome {
 		System.out.println();
 	}
 	
+	public static int totalFileToBookList() {
+		try {
+			FileReader fr = new FileReader("book.txt");
+			BufferedReader reader = new BufferedReader(fr);
+			
+			String str;
+			int num = 0;
+			
+			while((str = reader.readLine()) != null) {
+				if(str.contains("ISBN"))
+					++num;
+			}
+			
+			reader.close();
+			fr.close();
+			
+			return num;
+			
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		return 0;
+	}
+	
+	public static void setFileToBookList(Book[] booklist) {
+		try {
+			FileReader fr = new FileReader("book.txt");
+			BufferedReader reader = new BufferedReader(fr);
+			
+			String str2;
+			String[] readBook = new String[7];
+			int count = 0;
+			
+			while((str2 = reader.readLine()) != null) {
+				if (str2.contains("ISBN")) {
+					readBook[0] = str2;
+					readBook[1] = reader.readLine();
+					readBook[2] = reader.readLine();
+					readBook[3] = reader.readLine();
+					readBook[4] = reader.readLine();
+					readBook[5] = reader.readLine();
+					readBook[6] = reader.readLine();
+				}
+				
+				booklist[count++] = new Book(
+						readBook[0],
+						readBook[1],
+						Integer.parseInt(readBook[2]),
+						readBook[3],
+						readBook[4],
+						readBook[5],
+						readBook[6]
+					);
+			} // while 끝
+			
+			reader.close();
+			fr.close();
+			
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+	}
 	
 } // Welcome 클래스 끝 
 
