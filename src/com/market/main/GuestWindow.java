@@ -22,7 +22,7 @@ public class GuestWindow extends JFrame {
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((screenSize.width - 1000) / 2, 
-				(screenSize.height - 1000) / 2);
+				(screenSize.height - 750) / 2);
 		JPanel userPanel = new JPanel();
 		userPanel.setBounds(0, 100, 1000, 256);
 		
