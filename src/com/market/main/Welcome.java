@@ -88,7 +88,7 @@ public class Welcome {
 						menuCartBill();
 						break;
 					case 5:
-						mTotalBook = totalFileToBookList();
+						//mTotalBook = totalFileToBookList();
 						mBookList = new ArrayList<Book>();
 						menuCartAddItem(mBookList); // 9장
 						break;
@@ -380,7 +380,7 @@ public class Welcome {
 	/* ###################################
 	 */
 	public static void BookList(ArrayList<Book> booklist) {
-		setFileToBookList(booklist);
+		//setFileToBookList(booklist);
 		/*
 		booklist[0] = new Book("ISBN1234", "쉽게 배우는 JSP 웹 프로그래밍", 27000); // 27,000
 		booklist[0].setAuthor("송미영");
@@ -436,71 +436,6 @@ public class Welcome {
 		System.out.println("\t\t\t주문 총금액 : " + sum + "원\n");
 		System.out.println("----------------------------------------");
 		System.out.println();
-	}
-	
-	public static int totalFileToBookList() {
-		try {
-			FileReader fr = new FileReader("books.txt");
-			BufferedReader reader = new BufferedReader(fr);
-			
-			String str;
-			int num = 0;
-			
-			while((str = reader.readLine()) != null) {
-				if(str.contains("ISBN"))
-					++num;
-			}
-			
-			reader.close();
-			fr.close();
-			
-			return num;
-			
-		} catch(Exception e) {
-			System.out.println(e);
-		}
-		return 0;
-	}
-	
-	public static void setFileToBookList(ArrayList<Book> booklist) {
-		try {
-			FileReader fr = new FileReader("books.txt");
-			BufferedReader reader = new BufferedReader(fr);
-			
-			String str2;
-			String[] readBook = new String[7];
-			// int count = 0;
-			
-			while((str2 = reader.readLine()) != null) {
-				if (str2.contains("ISBN")) {
-					readBook[0] = str2;
-					readBook[1] = reader.readLine();
-					readBook[2] = reader.readLine();
-					readBook[3] = reader.readLine();
-					readBook[4] = reader.readLine();
-					readBook[5] = reader.readLine();
-					readBook[6] = reader.readLine();
-				}
-				
-				Book bookitem = new Book(
-						readBook[0],
-						readBook[1],
-						Integer.parseInt(readBook[2]),
-						readBook[3],
-						readBook[4],
-						readBook[5],
-						readBook[6]
-					);
-				
-				booklist.add(bookitem);
-			} // while 끝
-			
-			reader.close();
-			fr.close();
-			
-		} catch(Exception e) {
-			System.out.println(e);
-		}
 	}
 	
 } // Welcome 클래스 끝 
