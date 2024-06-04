@@ -4,9 +4,12 @@ package com.market.page;
 import com.market.cart.Cart;
 import com.market.cart.CartItem;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class CartItemListPage extends JPanel {
 	
@@ -71,6 +74,28 @@ public class CartItemListPage extends JPanel {
 		clearBtn.add(btnLbl);
 		btnPanel.add(clearBtn);
 		
+		// Chp15
+		clearBtn.addActionListener(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<CartItem> cartItem = cart.getmCartItem();
+				if (cart.mCartCount == 0) {
+					JOptionPane.showMessageDialog(clearBtn, "장바구니에 항목이 없습니다",
+							"장바구니 비우기", JOptionPane.ERROR_MESSAGE);
+				} else {
+					int select = JOptionPane.showConfirmDialog(clearBtn, "장바구니의 모든 항목을 삭제하겠습니까?");
+					
+					if (select == 0) {
+						TableModel tblModel = new DefaultTableModel(new Object[0][0], tblHeader);
+						cartTable.setModel(tblModel);
+						ttlPriceLbl.setText("총금액: " + 0 + "원");
+						JOptionPane.showMessageDialog(clearBtn, "장바구니의 모든 항목을 삭제했습니다",
+								"장바구니 비우기", JOptionPane.INFORMATION_MESSAGE);
+						cart.deleteBooks();
+					}
+				}
+			}
+		});
+		
 		JLabel rmLbl = new JLabel("장바구니의 항목 삭제하기");
 		rmLbl.setFont(ft);
 		JButton rmBtn = new JButton();
@@ -82,8 +107,34 @@ public class CartItemListPage extends JPanel {
 		JButton refreshBtn = new JButton();
 		refreshBtn.add(refreshLbl);
 		btnPanel.add(refreshBtn);
+		
+		// Chp15
+		refreshBtn.addActionListener(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<CartItem> cartItem = cart.getmCartItem();
+				Object[][] content = new Object[cartItem.size()][tblHeader.length];
+				
+				Integer ttlPrice = 0;
+				for (int i = 0; i < cartItem.size(); i++) {
+					CartItem item = cartItem.get(i);
+					
+					content[i][0] = item.getBookID();
+					content[i][1] = item.getItemBook().getName();
+					content[i][2] = item.getItemBook().getUnitPrice();
+					content[i][3] = item.getQuantity();
+					content[i][4] = item.getTotalPrice();
+
+					ttlPrice += item.getQuantity() * item.getItemBook().getUnitPrice();
+				}
+				
+				TableModel tblModel = new DefaultTableModel(content, tblHeader);
+				ttlPriceLbl.setText("총금액: " + ttlPrice + "원");
+				cartTable.setModel(tblModel);
+			}
+		});
 	}
 
+	/*
 	public static void main(String[] args) {
 		Cart mCart = new Cart();
 		JFrame frame = new JFrame();
@@ -98,5 +149,5 @@ public class CartItemListPage extends JPanel {
 		
 		frame.setVisible(true);
 	}
-
+	*/
 }

@@ -2,6 +2,9 @@ package com.market.main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import com.market.member.UserInit;
 
 public class GuestWindow extends JFrame {
 
@@ -70,9 +73,31 @@ public class GuestWindow extends JFrame {
 		JButton enterBtn = new JButton();
 		enterBtn.add(buttonLbl);
 		buttonPanel.add(enterBtn);
+		
+		// Chp15
+		enterBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JLabel msg = new JLabel("고객 정보를 입력하세요.");
+				msg.setFont(ft);
+				
+				if (nameField.getText().isEmpty() ||
+					phoneField.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(enterBtn,
+							msg, "고객 정보",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					UserInit.init(nameField.getText(), Integer.parseInt(phoneField.getText()));
+					dispose(); // 대화상자 닫기
+					
+					new MainWindow("온라인 서점", 0, 0, 1000, 750);
+				}
+			}
+		});
 	}
 	
+	/*
 	public static void main(String[] args) {
 		new GuestWindow("고객 정보 입력", 0, 0, 1000, 750);
 	}
+	*/
 }

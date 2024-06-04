@@ -3,6 +3,8 @@ package com.market.page;
 import javax.swing.*;
 import java.awt.*;
 
+import com.market.member.UserInit;
+
 public class GuestInfoPage extends JPanel {
 
 	public GuestInfoPage(JPanel panel) {
@@ -22,7 +24,8 @@ public class GuestInfoPage extends JPanel {
 		nameLbl.setBackground(Color.BLUE);
 		
 		JLabel nameField = new JLabel();
-		nameField.setText("입력된 고객 이름");
+		// nameField.setText("입력된 고객 이름");
+		nameField.setText(UserInit.getmUser().getName());
 		nameField.setFont(ft);
 		
 		namePanel.add(nameLbl);
@@ -34,13 +37,15 @@ public class GuestInfoPage extends JPanel {
 		JLabel phoneLbl = new JLabel("연락처: ");
 		phoneLbl.setFont(ft);
 		JLabel phoneField = new JLabel();
-		phoneField.setText("입력된 고객 연락처");
+		// phoneField.setText("입력된 고객 연락처");
+		phoneField.setText(String.valueOf(UserInit.getmUser().getPhone()));
 		phoneField.setFont(ft);
 		
 		phonePanel.add(phoneLbl);
 		phonePanel.add(phoneField);
 	}
 	
+	/*
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		frame.setBounds(0, 0, 1000, 750);
@@ -54,5 +59,5 @@ public class GuestInfoPage extends JPanel {
 		
 		frame.setVisible(true);
 	}
-
+	*/
 }

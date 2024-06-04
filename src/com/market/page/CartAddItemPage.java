@@ -7,6 +7,10 @@ import com.market.cart.Cart;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class CartAddItemPage extends JPanel {
 	
@@ -70,8 +74,68 @@ public class CartAddItemPage extends JPanel {
 		JButton addBtn = new JButton();
 		addBtn.add(btnLbl);
 		btnPanel.add(addBtn);
+		
+		// Chp15
+		bookTbl.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				int row = bookTbl.getSelectedRow();
+				int col = bookTbl.getSelectedColumn();
+				mSelectRow = row;
+				
+				Object value = bookTbl.getValueAt(row, 0);
+				String str = value + ".jpg";
+				imgBook = new ImageIcon("./images/" + str);
+				imgBook.setImage(imgBook.getImage().getScaledInstance(250, 300, Image.SCALE_DEFAULT));
+				JLabel lbl = new JLabel(imgBook);
+				
+				imgPanel.removeAll();
+				imgPanel.add(lbl);
+				imgPanel.revalidate();
+				imgPanel.repaint();
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO
+			}
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO
+			}
+		});
+		
+		addBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Book> booklist = BookInit.getmBookList();
+				int select = JOptionPane.showConfirmDialog(addBtn, "장바구니에 추가하겠습니까?");
+				
+				if (select == 0) {
+					int numId = mSelectRow;
+					if (!isBookInCart(booklist.get(numId).getBookId())) {
+						mCart.insertBook(booklist.get(numId));
+					}
+					JOptionPane.showMessageDialog(addBtn, "추가했습니다");
+				}
+			}
+		});
+	}
+	
+	public boolean isBookInCart(String bookId) {
+		return mCart.isBookInCart(bookId);
 	}
 
+	/*
 	public static void main(String[] args) {
 		Cart mCart = new Cart();
 		JFrame frame = new JFrame();
@@ -87,5 +151,5 @@ public class CartAddItemPage extends JPanel {
 		
 		frame.setVisible(true);
 	}
-
+	*/
 }
