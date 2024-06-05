@@ -2,6 +2,7 @@ package com.market.page;
 
 import com.market.bookitem.BookInit;
 import com.market.cart.Cart;
+import com.market.member.UserInit;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,11 +26,13 @@ public class CartOrderBillPage extends JPanel {
 		this.mCart = cart;
 		
 		shippingPanel = new JPanel();
-		shippingPanel.setBounds(200, 50, 700, 500);
+		// shippingPanel.setBounds(200, 50, 700, 500);
+		shippingPanel.setBounds(0, 0, 700, 500);
 		shippingPanel.setLayout(null);
-		add(shippingPanel);
+		// add(shippingPanel);
+		panel.add(shippingPanel);
 		
-		printBillInfo("입력된 고객 이름", "입력된 고객 연락처", "입력된 고객 배송지");
+		printBillInfo(UserInit.getmUser().getName(), String.valueOf(UserInit.getmUser().getPhone()), UserInit.getmUser().getAddress());
 		
 	}
 	
@@ -140,6 +143,7 @@ public class CartOrderBillPage extends JPanel {
 		panel.add(panel07);
 	}
 
+	/*
 	public static void main(String[] args) {
 
 		Cart mCart = new Cart();
@@ -156,5 +160,5 @@ public class CartOrderBillPage extends JPanel {
 		frame.setVisible(true);
 
 	}
-
+	*/
 }

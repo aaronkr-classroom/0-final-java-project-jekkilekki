@@ -2,13 +2,17 @@ package com.market.page;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import com.market.cart.Cart;
+import com.market.member.UserInit;
 
 public class CartShippingPage extends JPanel {
 	
+	Cart mCart;
 	JPanel shippingPanel;
 	JPanel radioPanel;
 	
-	public CartShippingPage(JPanel panel) {
+	public CartShippingPage(JPanel panel, Cart cart) {
 		
 		Font ft = new Font("함초롬돋음", Font.BOLD, 15);
 		setLayout(null);
@@ -40,6 +44,33 @@ public class CartShippingPage extends JPanel {
 		radioOk.setSelected(true);
 		radioNo.setSelected(false);
 		UserShippingInfo(true);
+		
+		// Chp 15 (p. 711)
+		this.mCart = cart;
+		
+		radioOk.addActionListener(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				if (radioOk.isSelected()) {
+					shippingPanel.removeAll();
+					UserShippingInfo(true);
+					shippingPanel.revalidate();
+					shippingPanel.repaint();
+					radioNo.setSelected(false);
+				}
+			}
+		});
+		
+		radioNo.addActionListener(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				if (radioNo.isSelected()) {
+					shippingPanel.removeAll();
+					UserShippingInfo(false);
+					shippingPanel.revalidate();
+					shippingPanel.repaint();
+					radioOk.setSelected(false);
+				}
+			}
+		});
 	}
 	
 	public void UserShippingInfo(boolean select) {
@@ -58,7 +89,8 @@ public class CartShippingPage extends JPanel {
 		nameLbl2.setFont(ft);
 		if (select) {
 			nameLbl2.setBackground(Color.LIGHT_GRAY);
-			nameLbl2.setText("입력된 고객 이름");
+			// nameLbl2.setText("입력된 고객 이름");
+			nameLbl2.setText(UserInit.getmUser().getName());
 		}
 		namePanel.add(nameLbl2);
 		shippingPanel.add(namePanel);
@@ -74,7 +106,8 @@ public class CartShippingPage extends JPanel {
 		phoneLbl2.setFont(ft);
 		if (select) {
 			phoneLbl2.setBackground(Color.LIGHT_GRAY);
-			phoneLbl2.setText("입력된 고객 연락처");
+			// phoneLbl2.setText("입력된 고객 연락처");
+			phoneLbl2.setText(String.valueOf(UserInit.getmUser().getPhone()));
 		}
 		phonePanel.add(phoneLbl2);
 		shippingPanel.add(phonePanel);
@@ -100,8 +133,23 @@ public class CartShippingPage extends JPanel {
 		orderBtn.add(buttonLbl);
 		buttonPanel.add(orderBtn);
 		shippingPanel.add(buttonPanel);
+		
+		// Chp15 (p. 712)
+		orderBtn.addActionListener(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				radioPanel.removeAll();
+				radioPanel.revalidate();
+				radioPanel.repaint();
+				shippingPanel.removeAll();
+				shippingPanel.add("주문 배송지", new CartOrderBillPage(shippingPanel, mCart));
+				mCart.deleteBooks();
+				shippingPanel.revalidate();
+				shippingPanel.repaint();
+			}
+		});
 	}
 
+	/*
 	public static void main(String[] args) {
 		
 		JFrame frame = new JFrame();
@@ -117,5 +165,5 @@ public class CartShippingPage extends JPanel {
 		frame.setVisible(true);
 		
 	}
-
+	*/
 }

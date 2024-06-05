@@ -5,8 +5,10 @@ import javax.swing.*;
 import com.market.bookitem.BookInit;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.io.FileWriter;
 
 public class AdminPage extends JPanel {
 	
@@ -105,14 +107,68 @@ public class AdminPage extends JPanel {
 		okBtn.add(okLbl);
 		btnPanel.add(okBtn);
 		
+		// Chp15 (p. 719)
+		okBtn.addActionListener(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				String[] writeBook = new String[7];
+				writeBook[0] = idTxtField.getText();
+				writeBook[1] = nameTxtField.getText();
+				writeBook[2] = priceTxtField.getText();
+				writeBook[3] = authorTxtField.getText();
+				writeBook[4] = descTxtField.getText();
+				writeBook[5] = categoryTxtField.getText();
+				writeBook[6] = dateTxtField.getText();
+				
+				try {
+					FileWriter fw = new FileWriter("books.txt", true);
+					
+					for (int i = 0; i < 7; i++)
+						fw.write(writeBook[i] + "\n");
+					
+					fw.close();
+					
+					JOptionPane.showMessageDialog(okBtn, "새 도서 정보가 저장되었습니다");
+					
+					Date date = new Date();
+					SimpleDateFormat formatter = new SimpleDateFormat("yyMMddhhmmss");
+					String strDate = formatter.format(date);
+					
+					idTxtField.setText("ISBN" + strDate);
+					nameTxtField.setText("");
+					priceTxtField.setText("");
+					authorTxtField.setText("");
+					descTxtField.setText("");
+					categoryTxtField.setText("");
+					dateTxtField.setText("");
+					
+					System.out.println("새 도서 정보가 저장되었습니다");
+				} catch(Exception ex) {
+					System.out.println(ex);
+				}
+			}
+		});
+		
 		JLabel noLbl = new JLabel("취소");
 		noLbl.setFont(ft);
 		JButton noBtn = new JButton();
 		noBtn.add(noLbl);
 		btnPanel.add(noBtn);
 		
+		// Chp15 (p. 720)
+		noBtn.addActionListener(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				nameTxtField.setText("");
+				priceTxtField.setText("");
+				authorTxtField.setText("");
+				descTxtField.setText("");
+				categoryTxtField.setText("");
+				dateTxtField.setText("");
+			}
+		});
+		
 	}
 
+	/*
 	public static void main(String[] args) {
 
 		JFrame frame = new JFrame();
@@ -127,5 +183,5 @@ public class AdminPage extends JPanel {
 		frame.setVisible(true);
 
 	}
-
+	*/
 }

@@ -12,6 +12,9 @@ import com.market.cart.Cart;
 import com.market.bookitem.BookInit;
 import com.market.page.CartAddItemPage;
 import com.market.page.CartItemListPage;
+import com.market.page.CartShippingPage;
+import com.market.page.AdminPage;
+import com.market.page.AdminLoginDialog;
 
 public class MainWindow extends JFrame {
 	
@@ -20,10 +23,81 @@ public class MainWindow extends JFrame {
 
 	public MainWindow(String title, int x, int y, int width, int height) {
 		initContainer(title, x, y, width, height);
+		initMenu();
+		
 		setVisible(true);
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setIconImage(new ImageIcon("./images/shop.png").getImage());
+	}
+	
+	private void initMenu() {
+		Font ft = new Font("함초롬돋음", Font.BOLD, 15);
+		
+		JMenuBar menuBar = new JMenuBar();
+		
+		JMenu menu01 = new JMenu("고객");
+		menu01.setFont(ft);
+		JMenuItem item01 = new JMenuItem("고객 정보");
+		JMenuItem item02 = new JMenuItem("종료");
+		menu01.add(item01);
+		menu01.add(item02);
+		menuBar.add(menu01);
+		
+		JMenu menu02 = new JMenu("상품");
+		menu02.setFont(ft);
+		JMenuItem item11 = new JMenuItem("상품 목록");
+		menu02.add(item11);
+		menuBar.add(menu02);
+		
+		JMenu menu03 = new JMenu("장바구니");
+		menu03.setFont(ft);
+		JMenuItem item21 = new JMenuItem("항목 추가");
+		JMenuItem item22 = new JMenuItem("항목 수량 줄이기");
+		JMenuItem item23 = new JMenuItem("함목 삭제하기");
+		JMenuItem item24 = new JMenuItem("장바구니 비우기");
+		menu03.add(item21);
+		menu03.add(item22);
+		menu03.add(item23);
+		menu03.add(item24);
+		menuBar.add(menu03);
+		
+		JMenu menu04 = new JMenu("주문");
+		menu04.setFont(ft);
+		JMenuItem item31 = new JMenuItem("영수증 표시");
+		menu04.add(item31);
+		menuBar.add(menu04);
+		
+		setJMenuBar(menuBar);
+		
+		item01.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mPagePanel.removeAll();
+				mPagePanel.add("고객 정보 확인", new GuestInfoPage(mPagePanel));
+				add(mPagePanel);
+				mPagePanel.revalidate();
+			}
+		});
+		
+		item02.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mPagePanel.removeAll();
+				setVisible(false);
+				new GuestWindow("고객 정보 입력", 0, 0, 1000, 750);
+				add(mPagePanel);
+				mPagePanel.revalidate();
+			}
+		});
+		
+		item11.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mPagePanel.removeAll();
+				BookInit.init();
+				mPagePanel.add("장바구니에 항목 추가하기", new CartAddItemPage(mPagePanel, mCart));
+				add(mPagePanel);
+				mPagePanel.revalidate();
+			}
+		});
 	}
 	
 	private void initContainer(String title, int x, int y, int width, int height) {
@@ -171,13 +245,57 @@ public class MainWindow extends JFrame {
 		bt7.setFont(ft);
 		mMenuPanel.add(bt7);
 		
+		// Chp15 (p. 709)
+		bt7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (mCart.mCartCount == 0) {
+					JOptionPane.showMessageDialog(bt7, "장바구니에 항목이 없습니다",
+							"주문처리", JOptionPane.ERROR_MESSAGE);
+				} else {
+					mPagePanel.removeAll();
+					mPagePanel.add("주문 배송지", new CartShippingPage(mPagePanel, mCart));
+					mPagePanel.revalidate();
+					mPagePanel.repaint();
+				}	
+			}
+		});
+		
 		JButton bt8 = new JButton("종료", new ImageIcon("./images/8.png"));
 		bt8.setFont(ft);
 		mMenuPanel.add(bt8);
 		
+		// Chp15 (p. 714)
+		bt8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int select = JOptionPane.showConfirmDialog(bt8, "쇼핑몰을 종료하겠습니까?");
+				
+				if (select == 0) {
+					System.exit(1);
+				}
+			}
+		});
+		
 		JButton bt9 = new JButton("관리자", new ImageIcon("./images/9.png"));
 		bt9.setFont(ft);
 		mMenuPanel.add(bt9);
+		
+		// Chp15 (p. 715)
+		bt9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AdminLoginDialog adminDialog;
+				JFrame frame = new JFrame();
+				
+				adminDialog = new AdminLoginDialog(frame, "관리자 로그인");
+				adminDialog.setVisible(true);
+				
+				if (adminDialog.isLogin) {
+					mPagePanel.removeAll();
+					mPagePanel.add("관리자", new AdminPage(mPagePanel));
+					mPagePanel.revalidate();
+					mPagePanel.repaint();
+				}
+			}
+		});
 		
 	}
 	

@@ -10,6 +10,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class CartItemListPage extends JPanel {
 	
@@ -101,6 +103,54 @@ public class CartItemListPage extends JPanel {
 		JButton rmBtn = new JButton();
 		rmBtn.add(rmLbl);
 		btnPanel.add(rmBtn);
+		
+		// Chp 15 (p. 707)
+		rmBtn.addActionListener(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				if (cart.mCartCount == 0) {
+					JOptionPane.showMessageDialog(rmBtn, "장바구니에 항목이 없습니다",
+							"장바구니 삭제하기", JOptionPane.ERROR_MESSAGE);
+				} else if (mSelectRow == -1) {
+					JOptionPane.showMessageDialog(rmBtn, "장바구니에서 삭제할 항목을 선택하세요",
+							"장바구니 삭제하기", JOptionPane.ERROR_MESSAGE);
+				} else {
+					ArrayList<CartItem> cartItem = cart.getmCartItem();
+					cartItem.remove(mSelectRow);
+					Object[][] content = new Object[cartItem.size()][tblHeader.length];
+					
+					Integer ttlPrice = 0;
+					for (int i = 0; i < cartItem.size(); i++) {
+						CartItem item = cartItem.get(i);
+						
+						content[i][0] = item.getBookID();
+						content[i][1] = item.getItemBook().getName();
+						content[i][2] = item.getItemBook().getUnitPrice();
+						content[i][3] = item.getQuantity();
+						content[i][4] = item.getTotalPrice();
+
+						ttlPrice += item.getQuantity() * item.getItemBook().getUnitPrice();
+					}
+					
+					TableModel tblModel = new DefaultTableModel(content, tblHeader);
+					ttlPriceLbl.setText("총금액: " + ttlPrice + "원");
+					cartTable.setModel(tblModel);
+					mSelectRow = -1;
+				}
+			}
+		});
+		
+		cartTable.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				int row = cartTable.getSelectedRow();
+				mSelectRow = row;
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+		});
 		
 		JLabel refreshLbl = new JLabel("장바구니 새로 고침");
 		refreshLbl.setFont(ft);
